@@ -1,0 +1,12 @@
+M 66 1323 4 5 5 5 5 5 5 5
+excelent entry;
+
+M 20 1324 3 5 4 5 5 5 5 5
+Mitin Ilya;
+
+F 18 1323 2 4 4 4 4 4 4 4
+good entry;
+
+M 99 1324 1 3 4 5 3 4 5 3
+without grant entry;
+
