@@ -20,7 +20,6 @@ public:
 
 private slots:
     void on_PB_queue_clicked();
-
     void on_PB_order_clicked();
 
 private:
