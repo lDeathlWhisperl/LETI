@@ -5,9 +5,7 @@
 #include <QtSql>
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
+namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -32,13 +30,16 @@ private slots:
     void on_PB_r_entry_clicked();
 
     void on_TB_tools_clicked();
-
-
     void on_LE_find_editingFinished();
+
+    void on_PB_sort_clicked();
 
 private:
     void resizeEvent(QResizeEvent*);
     void keyPressEvent(QKeyEvent*);
+    void deleteEntry();
+    void backupField(int, const QString&, const QString&);
+    void table_on_tab();
     void sync();
 
 private:
@@ -47,8 +48,15 @@ private:
 
     QSqlDatabase db;
     bool isSync = false;
+    bool isBackup = false;
 
     int del_id = -1;
-    QString table;
+
+    QString table_name;
+    class QTableWidget* table;
+
+    int row;
+    int column;
+    QString col_name;
 };
 #endif // MAINWINDOW_H
