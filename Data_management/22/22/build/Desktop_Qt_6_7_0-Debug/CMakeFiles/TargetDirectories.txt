@@ -1,0 +1,9 @@
+/home/ilya/Desktop/LETI/Data_management/22/22/build/Desktop_Qt_6_7_0-Debug/CMakeFiles/22.dir
+/home/ilya/Desktop/LETI/Data_management/22/22/build/Desktop_Qt_6_7_0-Debug/CMakeFiles/edit_cache.dir
+/home/ilya/Desktop/LETI/Data_management/22/22/build/Desktop_Qt_6_7_0-Debug/CMakeFiles/rebuild_cache.dir
+/home/ilya/Desktop/LETI/Data_management/22/22/build/Desktop_Qt_6_7_0-Debug/CMakeFiles/list_install_components.dir
+/home/ilya/Desktop/LETI/Data_management/22/22/build/Desktop_Qt_6_7_0-Debug/CMakeFiles/install.dir
+/home/ilya/Desktop/LETI/Data_management/22/22/build/Desktop_Qt_6_7_0-Debug/CMakeFiles/install/local.dir
+/home/ilya/Desktop/LETI/Data_management/22/22/build/Desktop_Qt_6_7_0-Debug/CMakeFiles/install/strip.dir
+/home/ilya/Desktop/LETI/Data_management/22/22/build/Desktop_Qt_6_7_0-Debug/CMakeFiles/22_autogen_timestamp_deps.dir
+/home/ilya/Desktop/LETI/Data_management/22/22/build/Desktop_Qt_6_7_0-Debug/CMakeFiles/22_autogen.dir
