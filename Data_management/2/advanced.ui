@@ -78,7 +78,7 @@
      <item>
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>зарегистрирован в </string>
+        <string>зарегистрирован в</string>
        </property>
       </widget>
      </item>
@@ -86,13 +86,6 @@
       <widget class="QLabel" name="L_pers_count">
        <property name="text">
         <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>происшествиях</string>
        </property>
       </widget>
      </item>

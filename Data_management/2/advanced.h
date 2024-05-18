@@ -22,6 +22,10 @@ private slots:
     void on_LE_date_e_editingFinished();
     void getIncidentsCount();
 
+    void on_LE_reg_id_editingFinished();
+
+    void on_PB_get_protocol_clicked();
+
 signals:
     void dateChanged();
 
@@ -30,6 +34,8 @@ private:
 
     QString date_start;
     QString date_end;
+
+    class QRegularExpression* re;
 };
 
 #endif // ADVANCED_H

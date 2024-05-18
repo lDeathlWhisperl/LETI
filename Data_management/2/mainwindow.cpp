@@ -37,8 +37,7 @@ int id_to_row(int id, QString table_name)
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    adv_opt(new Advanced(this))
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -48,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     if(!db.open())
         qFatal() << "\x1b[30;41mDatabase was not open\x1b[0m";
 
+    adv_opt = new Advanced(this);
     sync();
 }
 
@@ -88,22 +88,35 @@ void MainWindow::deleteEntry()
     del_id = -1;
 }
 
-void MainWindow::backupField(int id, const QString& regex, const QString& w_message) // NOTE: should be refactored
+void MainWindow::backupField(int id, const QString& regex) // NOTE: should be refactored
 {
     QSqlQuery query;
     QRegularExpression re;
-    // //check if field is already exists
+    QString prev_entry = "";
+
     query.exec("SELECT " + col_name + " FROM " + table_name + " WHERE id = " + QString::number(id));
-    qDebug() << "SELECT registration_id FROM persons WHERE id = " + QString::number(id) << query.lastError().databaseText();
+    qDebug() << "SELECT " + col_name + " FROM " + table_name + " WHERE id = " + QString::number(id) << query.lastError().databaseText();
+
+    if(query.next()) prev_entry = query.value(0).toString();
 
     re.setPattern(regex);
     auto match = re.match(table->item(row, column)->text());
 
-    if(!match.hasMatch() && query.next())
+    if(!match.hasMatch())
+    {
+        isBackup = true;
+        table->item(row, column)->setText(prev_entry);
+        qDebug() << "\x1b[1;43mWrong field format\x1b[0m";
+        return;
+    }
+
+    if(table_name != "persons") return;
+
+    if(!prev_entry.isEmpty())
     {
         isBackup = true; //otherwise the next line calls the method twice
         table->item(row, column)->setText(query.value(0).toString());
-        qDebug() << "\x1b[1;43m" << w_message << "\x1b[0m";
+        qDebug() << "\x1b[1;43mThis entry is exsits already\x1b[0m";
     }
 }
 
@@ -236,11 +249,11 @@ void MainWindow::on_TW_messages_cellChanged(int r, int c)
     {
     case 0:
         col_name = "message_id";
-        backupField(id, "^[1-9][0-9]*$", "This field exists already or has invalid id");
+        backupField(id, "^[1-9][0-9]*$");
         break;
     case 1:
         col_name = "date";
-        backupField(id, "^(0[1-9]|[12][0-9]|3[12]).(0[1-9]|1[12]).(19[0-9][0-9]|20[0-2][0-4])$", "Invalid date format: use DD.MM.YYYY format instead");
+        backupField(id, "^(0[1-9]|[12][0-9]|3[12]).(0[1-9]|1[12]).(19[0-9][0-9]|20[0-2][0-9])$");
         break;
     case 2:
         col_name = "type";
@@ -250,7 +263,7 @@ void MainWindow::on_TW_messages_cellChanged(int r, int c)
         break;
     case 4:
         col_name = "criminal_id";
-        backupField(id, "^[1-9][0-9]*$", "This field exists already or has invalid id");
+        backupField(id, "^[1-9][0-9]*$");
         break;
     }
 
@@ -265,15 +278,15 @@ void MainWindow::on_TW_persons_cellChanged(int r, int c)
 {
     if(!isSync) return;
 
-    row = r;
-    column = c;
-    table = ui->TW_persons;
-
     if(isBackup)
     {
         isBackup = false;
         return;
     }
+
+    row = r;
+    column = c;
+    table = ui->TW_persons;
 
     QSqlQuery query;
     int id = row_to_id(row, "persons");
@@ -282,27 +295,27 @@ void MainWindow::on_TW_persons_cellChanged(int r, int c)
     {
     case 0:
         col_name = "registration_id";
-        backupField(id, "^[1-9][0-9]*$", "This field exists already or has invalid id");
+        backupField(id, "^[1-9][0-9]*$");
         break;
     case 1:
         col_name = "name";
-        backupField(id, "^[A-Z][a-z]*$", "This field exists already or has invalid name");
+        backupField(id, "^[A-Z][a-z]*$");
         break;
     case 2:
         col_name = "surname";
-        backupField(id, "^[A-Z][a-z]*$", "This field exists already or has invalid surname");
+        backupField(id, "^[A-Z][a-z]*$");
         break;
     case 3:
         col_name = "patronymic";
-        backupField(id, "^([A-Z][a-z]*|-| )$", "This field exists already or has invalid name");
+        backupField(id, "^([A-Z][a-z]*|-| )$");
         break;
     case 4:
         col_name = "address";
-        backupField(id, "^([A-Z][a-z]*|-| )$", "This field exists already or has invalid address");
+        backupField(id, "^([A-Z][a-z]*|-| )$");
         break;
     case 5:
         col_name = "convictions";
-        backupField(id, "^[0-9]*$", "This field exists already or invalid");
+        backupField(id, "^[0-9]*$");
         break;
     }
 
@@ -333,11 +346,11 @@ void MainWindow::on_TW_relations_cellChanged(int r, int c)
     {
     case 0:
         col_name = "incident_id";
-        backupField(id, "^[1-9][0-9]*$", "This field exists already or has invalid id");
+        backupField(id, "^[1-9][0-9]*$");
         break;
     case 1:
         col_name = "registration_id";
-        backupField(id, "^[1-9][0-9]*$", "This field exists already or has invalid id");
+        backupField(id, "^[1-9][0-9]*$");
         break;
     case 2:
         col_name = "relation";

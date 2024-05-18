@@ -38,7 +38,7 @@ private:
     void resizeEvent(QResizeEvent*);
     void keyPressEvent(QKeyEvent*);
     void deleteEntry();
-    void backupField(int, const QString&, const QString&);
+    void backupField(int, const QString&);
     void table_on_tab();
     void sync();
 
