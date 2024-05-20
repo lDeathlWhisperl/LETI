@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ProductTable</class>
+ <widget class="QDialog" name="ProductTable">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>652</width>
+    <height>429</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTableWidget" name="TW_products">
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <column>
+      <property name="text">
+       <string>Наименование</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Количество</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Закупочная цена</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Цена продажи</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

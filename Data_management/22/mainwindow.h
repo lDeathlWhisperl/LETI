@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "shop.h"
+
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -18,6 +20,16 @@ public:
     ~MainWindow();
 
 private:
+    void closeEvent(QCloseEvent*);
+
+private slots:
+    void on_PB_shop_clicked();
+
+    void on_PB_salesman_clicked();
+
+private:
     Ui::MainWindow *ui;
+
+    Shop* shop;
 };
 #endif // MAINWINDOW_H
