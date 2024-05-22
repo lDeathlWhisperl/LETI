@@ -56,16 +56,15 @@ bool Shop::isValid(QString name, QString unit, QString pp, QString sp)
 
     QRegularExpression re;
 
-    re.setPattern("^[A-zА-я][a-zа-я]*( \"([A-zА-я][a-zа-я]*|[A-zА-я][a-zа-я]* [A-zА-я][a-zа-я]*)\")?$");
-    CHECKMATCH(name)
+    re.setPattern("^[A-zА-я][a-zа-я]*( ([A-zА-я]* ?)?(\"([A-zА-я][a-zа-я]*|[A-zА-я][a-zа-я]* [A-zА-я][a-zа-я]*)\")?)?$");
+    CHECKMATCH(name);
 
-    re.setPattern("^[0-9]*$");
-    CHECKMATCH(unit)
+    re.setPattern("^(1|[1-9][0-9]*)$");
+    CHECKMATCH(unit);
+    CHECKMATCH(pp);
+    CHECKMATCH(sp);
 
-    CHECKMATCH(pp)
-
-    CHECKMATCH(sp)
-
+    qDebug() << "Valid";
     return true;
 }
 
@@ -107,6 +106,7 @@ void Shop::on_PB_removeFromBD_clicked()
 
     QSqlQuery query;
     query.exec("DELETE FROM product WHERE name = \'" + name + "\' AND unit = " + QString::number(unit));
+    qDebug() << "DELETE FROM product WHERE name = \'" + name + "\' AND unit = " + QString::number(unit) << query.lastError().text();
     emit dataChanged();
 }
 

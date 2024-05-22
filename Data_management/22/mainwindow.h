@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "shop.h"
+// #include "shop.h"
 
 #include <QMainWindow>
 
@@ -30,6 +30,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    Shop* shop;
+    class Shop* shop;
+    class Salesman* salesman;
 };
 #endif // MAINWINDOW_H

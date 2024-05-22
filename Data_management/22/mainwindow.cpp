@@ -3,11 +3,13 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "shop.h"
+#include "salesman.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    shop(new Shop)
+    shop(new Shop),
+    salesman(new Salesman)
 {
     ui->setupUi(this);
 
@@ -20,11 +22,14 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::closeEvent(QCloseEvent*)
 {
     shop->close();
+    salesman->close();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete shop;
+    delete salesman;
 }
 
 void MainWindow::on_PB_shop_clicked()
@@ -34,6 +39,6 @@ void MainWindow::on_PB_shop_clicked()
 
 void MainWindow::on_PB_salesman_clicked()
 {
-
+    salesman->show();
 }
 
