@@ -11,9 +11,19 @@ class ProductTable : public QDialog
 {
     Q_OBJECT
 
-public:
+    static ProductTable* instance;
+
     explicit ProductTable(QWidget *parent = nullptr);
+public:
     ~ProductTable();
+
+    static ProductTable* getInstance(QWidget *parent = nullptr)
+    {
+        if(!instance)
+            instance = new ProductTable(parent);
+
+        return instance;
+    }
 
 private:
     void resizeEvent(QResizeEvent*);

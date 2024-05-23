@@ -9,7 +9,7 @@
 Shop::Shop(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Shop),
-    table(new ProductTable(this))
+    table(ProductTable::getInstance(this))
 {
     ui->setupUi(this);
 
@@ -56,7 +56,7 @@ bool Shop::isValid(QString name, QString unit, QString pp, QString sp)
 
     QRegularExpression re;
 
-    re.setPattern("^[A-zА-я][a-zа-я]*( ([A-zА-я]* ?)?(\"([A-zА-я][a-zа-я]*|[A-zА-я][a-zа-я]* [A-zА-я][a-zа-я]*)\")?)?$");
+    re.setPattern("^[A-zА-я][a-zа-я]*( ([A-zА-я][a-zа-я]*))*( \"([A-zА-я][a-zа-я]* ?)*\")?$");
     CHECKMATCH(name);
 
     re.setPattern("^(1|[1-9][0-9]*)$");
@@ -92,7 +92,6 @@ void Shop::on_PB_addToBD_clicked()
     }
 
     query.exec("INSERT INTO product VALUES (" + QString::number(id) + ", \'" + name + "\', " + QString::number(unit) + ", " + QString::number(purchase_price) + ", " + QString::number(sale_price) + ")");
-    qDebug() << "INSERT INTO product VALUES (" + QString::number(id) + ", \'" + name + "\', " + QString::number(unit) + ", " + QString::number(purchase_price) + ", " + QString::number(sale_price) + ")" << query.lastError().text();
     emit dataChanged();
 }
 
@@ -106,7 +105,6 @@ void Shop::on_PB_removeFromBD_clicked()
 
     QSqlQuery query;
     query.exec("DELETE FROM product WHERE name = \'" + name + "\' AND unit = " + QString::number(unit));
-    qDebug() << "DELETE FROM product WHERE name = \'" + name + "\' AND unit = " + QString::number(unit) << query.lastError().text();
     emit dataChanged();
 }
 

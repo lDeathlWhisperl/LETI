@@ -5,6 +5,8 @@
 #include "producttable.h"
 #include "ui_producttable.h"
 
+ProductTable* ProductTable::instance;
+
 ProductTable::ProductTable(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::ProductTable)
