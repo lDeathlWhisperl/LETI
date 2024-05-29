@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>617</width>
+    <width>866</width>
     <height>478</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>История продаж</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -22,16 +22,6 @@
      <column>
       <property name="text">
        <string>ФИО</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Процент комиссионных</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Вознаграждение</string>
       </property>
      </column>
      <column>

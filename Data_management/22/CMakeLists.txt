@@ -25,9 +25,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         shop.h shop.cpp shop.ui
-        salesman.h salesman.cpp salesman.ui
+        sales.h sales.cpp sales.ui
         producttable.h producttable.cpp producttable.ui
         historytable.h historytable.cpp historytable.ui
+        salesmen.h salesmen.cpp salesmen.ui
 
     )
 # Define target properties for Android with Qt 6 as:

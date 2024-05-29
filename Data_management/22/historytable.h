@@ -24,7 +24,7 @@ public slots:
 private:
     Ui::historytable *ui;
 
-    class Salesman* prnt;
+    class Sales* prnt;
 };
 
 #endif // HISTORYTABLE_H

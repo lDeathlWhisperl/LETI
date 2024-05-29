@@ -2,7 +2,7 @@
 
 #include "historytable.h"
 #include "ui_historytable.h"
-#include "salesman.h"
+#include "sales.h"
 
 historytable::historytable(QWidget *parent)
     : QDialog(parent)
@@ -10,7 +10,7 @@ historytable::historytable(QWidget *parent)
 {
     ui->setupUi(this);
 
-    prnt = static_cast<Salesman*>(parent);
+    prnt = static_cast<Sales*>(parent);
     if(!prnt) qFatal() << "Something went wrong";
 
     connect(prnt, SIGNAL(dataChanged()), this, SLOT(updateEntries()));
@@ -18,8 +18,8 @@ historytable::historytable(QWidget *parent)
 
 void historytable::resizeEvent(QResizeEvent*)
 {
-    for(int i = 0; i < 6; ++i)
-        ui->TW_history->setColumnWidth(i, ui->TW_history->geometry().width() / 6);
+    for(int i = 0; i < 4; ++i)
+        ui->TW_history->setColumnWidth(i, ui->TW_history->geometry().width() / 4);
 }
 
 void historytable::updateEntries()
@@ -28,22 +28,17 @@ void historytable::updateEntries()
 
     QSqlQuery query, q;
 
-
     query.exec("SELECT * FROM history");
     while(query.next())
     {
         ui->TW_history->insertRow(ui->TW_history->rowCount());
-        for(int i = 1; i < 4; ++i)
+        for(int i = 2; i <= 4; ++i)
         {
-            q.exec("SELECT * FROM salesmen WHERE id = " + query.value(0).toString());
+            q.exec("SELECT name FROM salesmen WHERE id = " + query.value(1).toString());
 
             if(q.next())
-            {
-                ui->TW_history->setItem(ui->TW_history->rowCount()-1, 0, new QTableWidgetItem(q.value(1).toString()));
-                ui->TW_history->setItem(ui->TW_history->rowCount()-1, 1, new QTableWidgetItem(q.value(2).toString()));
-                ui->TW_history->setItem(ui->TW_history->rowCount()-1, 2, new QTableWidgetItem(q.value(3).toString()));
-            }
-            ui->TW_history->setItem(ui->TW_history->rowCount()-1, i+2, new QTableWidgetItem(query.value(i).toString()));
+                ui->TW_history->setItem(ui->TW_history->rowCount()-1, 0, new QTableWidgetItem(q.value(0).toString()));
+            ui->TW_history->setItem(ui->TW_history->rowCount()-1, i-1, new QTableWidgetItem(query.value(i).toString()));
         }
     }
 }

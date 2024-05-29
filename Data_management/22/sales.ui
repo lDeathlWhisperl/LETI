@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Управление продажами</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -110,6 +110,13 @@
     <widget class="QPushButton" name="PB_history">
      <property name="text">
       <string>Открыть историю продаж</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="PB_salesmen">
+     <property name="text">
+      <string>Открыть список кассиров</string>
      </property>
     </widget>
    </item>

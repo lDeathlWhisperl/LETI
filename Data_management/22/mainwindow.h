@@ -24,13 +24,13 @@ private:
 
 private slots:
     void on_PB_shop_clicked();
-
     void on_PB_salesman_clicked();
+    void profit();
 
 private:
     Ui::MainWindow *ui;
 
     class Shop* shop;
-    class Salesman* salesman;
+    class Sales* sales;
 };
 #endif // MAINWINDOW_H

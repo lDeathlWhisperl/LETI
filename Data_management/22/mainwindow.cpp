@@ -3,13 +3,13 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "shop.h"
-#include "salesman.h"
+#include "sales.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     shop(new Shop),
-    salesman(new Salesman)
+    sales(new Sales)
 {
     ui->setupUi(this);
 
@@ -17,19 +17,42 @@ MainWindow::MainWindow(QWidget *parent) :
     db.setDatabaseName("../../Database/shop");
 
     if(!db.open()) qFatal() << "Error: database did not open";
+
+    connect(shop, SIGNAL(dataChanged()), this, SLOT(profit()));
+    connect(sales, SIGNAL(dataChanged()), this, SLOT(profit()));
+    profit();
+}
+
+void MainWindow::profit()
+{
+    QSqlQuery query;
+    query.exec("SELECT SUM(prdct_prft) "
+               "FROM (SELECT (sale_price - purchase_price) * unit AS prdct_prft "
+                     "FROM product)");
+
+    if(query.next())
+        ui->L_predict_profit->setText("Ожидаемая прибыль: " + query.value(0).toString());
+
+    query.exec("SELECT SUM(profit)"
+               "FROM (SELECT (sale_price - purchase_price) * sold_amount AS profit "
+                     "FROM history, product "
+                     "WHERE sold_item = name)");
+
+    if(query.next())
+        ui->L_profit->setText("Фактическая прибыль: " + query.value(0).toString());
 }
 
 void MainWindow::closeEvent(QCloseEvent*)
 {
     shop->close();
-    salesman->close();
+    sales->close();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
     delete shop;
-    delete salesman;
+    delete sales;
 }
 
 void MainWindow::on_PB_shop_clicked()
@@ -39,6 +62,6 @@ void MainWindow::on_PB_shop_clicked()
 
 void MainWindow::on_PB_salesman_clicked()
 {
-    salesman->show();
+    sales->show();
 }
 
