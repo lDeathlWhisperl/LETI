@@ -22,7 +22,14 @@ private:
 private slots:
     void on_PB_add_clicked();
     void on_PB_del_clicked();
+    void on_PB_ch_pos_clicked();
+    void on_PB_sec_find_country_clicked();
     void on_PB_th_country_clicked();
+    void on_PB_find_volume_clicked();
+    void on_PB_find_pos_clicked();
+    void on_PB_find_theme_clicked();
+    void on_PB_pos_find_country_clicked();
+    void on_PB_report_clicked();
 
 private:
     Ui::MainWindow *ui;

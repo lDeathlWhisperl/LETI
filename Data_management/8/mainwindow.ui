@@ -376,7 +376,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Найти страны</string>
+         <string>Найти страну</string>
         </property>
        </widget>
       </item>
