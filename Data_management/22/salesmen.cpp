@@ -79,11 +79,9 @@ void Salesmen::on_PB_hire_clicked()
 
 void Salesmen::on_PB_fire_clicked()
 {
-    QString name = ui->LE_name->text();
-    double fees = ui->LE_fees->text().toDouble();
     int line = ui->LE_line->text().toInt();
 
-    if(!isValid(name, fees, line)) return;
+    if(!isValid("A Z", 0, line)) return;
 
     QSqlQuery query;
     query.exec("DELETE FROM salesmen WHERE id = " + QString::number(line));
