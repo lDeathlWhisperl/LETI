@@ -21,6 +21,8 @@ private:
     void closeEvent(QCloseEvent *);
 private slots:
     void on_PB_add_clicked();
+    void on_PB_add_coll_clicked();
+    void on_PB_add_sec_clicked();
     void on_PB_del_clicked();
     void on_PB_ch_pos_clicked();
     void on_PB_sec_find_country_clicked();

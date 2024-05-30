@@ -44,6 +44,33 @@ void MainWindow::on_PB_add_clicked()
                "VALUES (" + number + ", \'" + country + "\', " + serial_number + ", \'" + serial_theme + "\', " + year + ", \'" + color + "\', \'" + size + "\', " + price + ", \'" + stamp_theme + "\')");
 }
 
+void MainWindow::on_PB_add_coll_clicked()
+{
+    QString stamp_id = ui->LE_add_stamp_id->text();
+    QString section_number = ui->LE_add_sec_num->text();
+    QString page_position = ui->LE_add_page_pos->text();
+
+    QSqlQuery query;
+    query.exec("INSERT INTO collection "
+               "VALUES (" + stamp_id + ", " + section_number + ", \'" + page_position + "\')");
+    qDebug() << "INSERT INTO collection "
+                "VALUES (" + stamp_id + ", " + section_number + ", \'" + page_position + "\')" << query.lastError().text();
+}
+
+void MainWindow::on_PB_add_sec_clicked()
+{
+    QString id = ui->LE_add_sec_num_2->text();
+    QString volume = ui->LE_add_vol->text();
+    QString theme =ui->LE_add_theme->text();
+    QString country = ui->LE_add_cnt->text();
+
+    QSqlQuery query;
+    query.exec("INSERT INTO section "
+               "VALUES (" + id + ", " + volume + ", \'" + theme + "\', \'" + country + "\')");
+    qDebug() <<"INSERT INTO section "
+                "VALUES (" + id + ", " + volume + ", \'" + theme + "\', \'" + country + "\')"<< query.lastError().text();
+}
+
 void MainWindow::on_PB_del_clicked()
 {
     QString theme = ui->LE_del_theme->text();
@@ -215,21 +242,27 @@ void MainWindow::on_PB_report_clicked()
     info->close();
     info->setWindowTitle("Отчет");
 
-    QSqlQuery query("SELECT COUNT(serial_theme) AS cnt, serial_theme FROM stamp");
+    QSqlQuery query("SELECT COUNT(serial_theme) AS cnt, serial_theme "
+                    "FROM stamp "
+                    "GROUP BY serial_theme");
 
     QString report = "Количество и названия тем:\n";
     while(query.next()) report += query.value(1).toString() + " - " + query.value(0).toString() + "\n";
 
     report += "Страны по разделам:\n";
-    query.exec("SELECT country, id FROM section");
+    query.exec("SELECT country, id "
+               "FROM section");
     while(query.next()) report += query.value(0).toString() + " - раздел №" + query.value(1).toString() + "\n";
 
     report += "Количество марок каждой страны:\n";
-    query.exec("SELECT COUNT(country) AS cnt, country FROM stamp GROUP BY country");
+    query.exec("SELECT COUNT(country) AS cnt, country "
+               "FROM stamp "
+               "GROUP BY country");
     while(query.next()) report += query.value(1).toString() + " - " + query.value(0).toString() + "\n";
 
     report += "Количество страниц в коллекции: ";
-    query.exec("SELECT page_position FROM collection");
+    query.exec("SELECT page_position "
+               "FROM collection");
     QSet<QString> set;
     while(query.next())
     {
@@ -243,4 +276,3 @@ void MainWindow::on_PB_report_clicked()
     info->setText(report);
     info->show();
 }
-
