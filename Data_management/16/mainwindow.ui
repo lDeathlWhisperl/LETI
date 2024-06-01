@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>210</width>
-    <height>70</height>
+    <height>100</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>210</width>
-    <height>70</height>
+    <height>100</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>210</width>
-    <height>70</height>
+    <height>100</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -38,6 +38,13 @@
      <widget class="QPushButton" name="PB_admin">
       <property name="text">
        <string>Администратор</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="PB_report">
+      <property name="text">
+       <string>Отчет</string>
       </property>
      </widget>
     </item>

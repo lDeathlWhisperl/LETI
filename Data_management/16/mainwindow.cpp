@@ -2,6 +2,7 @@
 
 #include "manager.h"
 #include "admin.h"
+#include "report.h"
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
@@ -10,7 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     manager(new Manager(this)),
-    admin(new Admin(this))
+    admin(new Admin(this)),
+    report(new Report(this))
 {
     ui->setupUi(this);
 
@@ -25,6 +27,7 @@ void MainWindow::closeEvent(QCloseEvent*)
 {
     manager->close();
     admin->close();
+    report->close();
 }
 
 void MainWindow::on_PB_manager_clicked()
@@ -37,9 +40,17 @@ void MainWindow::on_PB_admin_clicked()
     admin->show();
 }
 
+void MainWindow::on_PB_report_clicked()
+{
+    report->generate();
+    report->show();
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
     delete manager;
     delete admin;
+    delete report;
 }
+

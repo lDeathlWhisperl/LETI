@@ -24,10 +24,13 @@ private slots:
     void on_PB_manager_clicked();
     void on_PB_admin_clicked();
 
+    void on_PB_report_clicked();
+
 private:
     Ui::MainWindow *ui;
 
     class Manager* manager;
     class Admin* admin;
+    class Report* report;
 };
 #endif // MAINWINDOW_H
