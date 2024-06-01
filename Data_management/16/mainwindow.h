@@ -18,6 +18,16 @@ public:
     ~MainWindow();
 
 private:
+    void closeEvent(QCloseEvent*);
+
+private slots:
+    void on_PB_manager_clicked();
+    void on_PB_admin_clicked();
+
+private:
     Ui::MainWindow *ui;
+
+    class Manager* manager;
+    class Admin* admin;
 };
 #endif // MAINWINDOW_H
