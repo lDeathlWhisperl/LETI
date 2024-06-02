@@ -45,7 +45,7 @@ bool Sales::isValid(QString name, double fees, QString sold_item, int sold_amoun
     re.setPattern("^(1|[1-9][0-9]*)$");
     CHECKMATCH(QString::number(sold_amount));
 
-    re.setPattern("^(0[1-9]|[12][0-9]|3[12]).(0[1-9]|1[0-2]).20[0-2][0-9]$");
+    re.setPattern("^(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0-2]).20[0-2][0-9]$");
     CHECKMATCH(date);
 
     qDebug() << "Valid";
