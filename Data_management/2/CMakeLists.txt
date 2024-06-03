@@ -25,6 +25,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         advanced.h advanced.cpp advanced.ui
+        report.h report.cpp report.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET 2 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

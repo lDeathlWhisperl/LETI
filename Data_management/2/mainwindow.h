@@ -32,8 +32,6 @@ private slots:
     void on_TB_tools_clicked();
     void on_LE_find_editingFinished();
 
-    void on_PB_sort_clicked();
-
 private:
     void resizeEvent(QResizeEvent*);
     void keyPressEvent(QKeyEvent*);

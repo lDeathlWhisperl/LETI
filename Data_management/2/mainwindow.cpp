@@ -5,12 +5,6 @@
 #include "./ui_mainwindow.h"
 #include "advanced.h"
 
-void setColumnWidth(QTableWidget* table, int col_cnt)
-{
-    for(int i = 0; i < col_cnt; ++i)
-        table->setColumnWidth(i, table->geometry().width() / col_cnt);
-}
-
 int row_to_id(int row, QString table_name)
 {
     QSqlQuery query;
@@ -53,9 +47,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::resizeEvent(QResizeEvent*)
 {
-    setColumnWidth(ui->TW_messages, 5);
-    setColumnWidth(ui->TW_persons, 6);
-    setColumnWidth(ui->TW_relations, 3);
+    ui->TW_messages->horizontalHeader()->setStretchLastSection(true);
+    ui->TW_persons->horizontalHeader()->setStretchLastSection(true);
+    ui->TW_relations->horizontalHeader()->setStretchLastSection(true);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
@@ -110,14 +104,6 @@ void MainWindow::backupField(int id, const QString& regex) // NOTE: should be re
         return;
     }
 
-    if(table_name != "persons") return;
-
-    if(!prev_entry.isEmpty())
-    {
-        isBackup = true; //otherwise the next line calls the method twice
-        table->item(row, column)->setText(query.value(0).toString());
-        qDebug() << "\x1b[1;43mThis entry is exsits already\x1b[0m";
-    }
 }
 
 void MainWindow::table_on_tab()
@@ -152,7 +138,10 @@ void MainWindow::sync()
     {
         ui->TW_messages->insertRow(ui->TW_messages->rowCount());
         for(int i = 0; i < 5; ++i)
-            ui->TW_messages->setItem(ui->TW_messages->rowCount()-1, i, new QTableWidgetItem(query.value(i).toString()));
+            if(i == 1)
+                ui->TW_messages->setItem(ui->TW_messages->rowCount()-1, i, new QTableWidgetItem(QDate::fromString(query.value(i).toString(), "yyyy.MM.dd").toString("dd.MM.yyyy")));
+            else
+                ui->TW_messages->setItem(ui->TW_messages->rowCount()-1, i, new QTableWidgetItem(query.value(i).toString()));
     }
 
     query.exec("SELECT * FROM persons");
@@ -253,7 +242,7 @@ void MainWindow::on_TW_messages_cellChanged(int r, int c)
         break;
     case 1:
         col_name = "date";
-        backupField(id, "^(0[1-9]|[12][0-9]|3[12]).(0[1-9]|1[12]).(19[0-9][0-9]|20[0-2][0-9])$");
+        backupField(id, "^(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0-2]).(19[0-9][0-9]|20[0-2][0-9])$");
         break;
     case 2:
         col_name = "type";
@@ -269,8 +258,8 @@ void MainWindow::on_TW_messages_cellChanged(int r, int c)
 
     if(isBackup) return;
 
-    query.exec("UPDATE incidents SET " + col_name + " = \'" + ui->TW_messages->item(row, column)->text() + "\' WHERE id = " + QString::number(id));
-    qDebug() << "UPDATE incidents SET " + col_name + " = \'" + ui->TW_messages->item(row, column)->text() + "\' WHERE id = " + QString::number(id) << query.lastError().databaseText();
+    query.exec("UPDATE incidents SET " + col_name + " = \'" + QDate::fromString(ui->TW_messages->item(row, column)->text(), "dd.MM.yyyy").toString("yyyy.MM.dd") + "\' WHERE id = " + QString::number(id));
+    qDebug() << "UPDATE incidents SET " + col_name + " = \'" + QDate::fromString(ui->TW_messages->item(row, column)->text(), "dd.MM.yyyy").toString("yyyy.MM.dd") + "\' WHERE id = " + QString::number(id) << query.lastError().databaseText();
 }
 
 
@@ -299,19 +288,19 @@ void MainWindow::on_TW_persons_cellChanged(int r, int c)
         break;
     case 1:
         col_name = "name";
-        backupField(id, "^[A-Z][a-z]*$");
+        backupField(id, "^[A-ZА-Я][a-zа-я]*$");
         break;
     case 2:
         col_name = "surname";
-        backupField(id, "^[A-Z][a-z]*$");
+        backupField(id, "^[A-ZА-Я][a-zа-я]*$");
         break;
     case 3:
         col_name = "patronymic";
-        backupField(id, "^([A-Z][a-z]*|-| )$");
+        backupField(id, "^([A-ZА-Я][a-zа-я]*|-| )$");
         break;
     case 4:
         col_name = "address";
-        backupField(id, "^([A-Z][a-z]*|-| )$");
+        // backupField(id, "^([A-ZА-Я][a-zа-я]*|-| )$");
         break;
     case 5:
         col_name = "convictions";
@@ -404,10 +393,5 @@ MainWindow::~MainWindow()
     delete ui;
     delete adv_opt;
     db.close();
-}
-
-void MainWindow::on_PB_sort_clicked()
-{
-    ui->TW_messages->sortByColumn(1, Qt::DescendingOrder);
 }
 

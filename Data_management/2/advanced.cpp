@@ -1,23 +1,25 @@
+#include <QtSql>
+
+#include "report.h"
 #include "advanced.h"
 #include "ui_advanced.h"
-#include <QtSql>
 
 Advanced::Advanced(QWidget *parent)
     : QDialog(parent),
     ui(new Ui::Advanced),
-    re(new QRegularExpression)
+    re(new QRegularExpression),
+    report(new Report(this))
 {
     ui->setupUi(this);
 
-    QSqlQuery query;
-    query.exec("CREATE TEMP TABLE temp AS SELECT date FROM incidents");
-    re->setPattern("^(0[1-9]|[12][0-9]|3[12]).(0[1-9]|1[12]).(19[0-9][0-9]|20[0-2][0-9])$");
+    re->setPattern("^(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0-2]).(19[0-9][0-9]|20[0-2][0-9])$");
     connect(this, SIGNAL(dateChanged()), this, SLOT(getIncidentsCount()));
 }
 
 Advanced::~Advanced()
 {
     delete ui;
+    delete report;
 }
 
 void Advanced::on_LE_date_s_editingFinished()
@@ -36,38 +38,13 @@ void Advanced::getIncidentsCount()
 {
     if(!re->match(date_start).hasMatch() || !re->match(date_end).hasMatch()) return;
 
-    int c1 = 0;
-    int c2 = 0;
+    date_start = QDate::fromString(date_start, "dd.MM.yyyy").toString("yyyy.MM.dd");
+    date_end = QDate::fromString(date_end, "dd.MM.yyyy").toString("yyyy.MM.dd");
 
-    QSqlQuery query;
-    query.exec("DELETE FROM temp");
+    QSqlQuery query("SELECT COUNT(date) FROM incidents WHERE date BETWEEN \'" + date_start + "\' AND \'" + date_end + "\'");
+    qDebug() << "SELECT COUNT(date) FROM incidents WHERE date BETWEEN \'" + date_start + "\' AND \'" + date_end + "\'";
 
-    QString ins = "";
-    query.exec("SELECT date FROM incidents ORDER BY date DESC");
-    while(query.next())
-        ins += "(\'" + query.value(0).toString() + "\'), ";
-
-    query.exec("INSERT INTO temp VALUES " + ins + "(\'" + date_start + "\'), (\'" + date_end + "\')");
-
-    query.exec("SELECT MAX(row) "
-               "FROM (SELECT ROW_NUMBER() OVER() AS row, date "
-                     "FROM (SELECT * "
-                           "FROM temp "
-                           "ORDER BY date DESC)) "
-               "WHERE date = \'" + date_start + "\'");
-
-    if(query.next()) c1 = query.value(0).toInt();
-
-    query.exec("SELECT MIN(row) "
-               "FROM (SELECT ROW_NUMBER() OVER() AS row, date "
-                     "FROM (SELECT * "
-                           "FROM temp "
-                           "ORDER BY date DESC)) "
-               "WHERE date = \'" + date_end + "\'");
-
-    if(query.next()) c2 = query.value(0).toInt();
-
-    ui->L_inc_count->setText(": " + QString::number(c1 - c2 - 1));
+    if(query.first()) ui->L_inc_count->setText(query.value(0).toString());
 }
 
 void Advanced::on_LE_reg_id_editingFinished()
@@ -100,6 +77,13 @@ void Advanced::on_LE_reg_id_editingFinished()
 
 void Advanced::on_PB_get_protocol_clicked()
 {
+    QString num = ui->LE_inc_prot->text();
+    QRegularExpression re("^[1-9][0-9]*$");
 
+    if(!re.match(num).hasMatch()) return;
+
+    report->setWindowTitle("Отчет по происшествию №" + num);
+    report->show();
+    report->generate(num);
 }
 

@@ -36,6 +36,7 @@ private:
     QString date_end;
 
     class QRegularExpression* re;
+    class Report* report;
 };
 
 #endif // ADVANCED_H
